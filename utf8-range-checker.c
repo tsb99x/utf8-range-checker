@@ -152,6 +152,11 @@ int main(int argc, char *argv[])
                 }
         }
 
+        if (ferror(stdin)) {
+                perror("failed to execute getchar()");
+                return EXIT_FAILURE;
+        }
+
         if (out_of_range > 0) {
                 fprintf(stderr,
                         "total code points outside of specified ranges: %d\n",
