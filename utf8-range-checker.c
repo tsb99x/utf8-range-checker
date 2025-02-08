@@ -48,17 +48,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int FULL_BYTE = 0xFF;        /* 0b11111111 */
-const int NEXT_BYTE_MASK = 0xC0;   /* 0b11000000 */
-const int NEXT_BYTE_PREFIX = 0x80; /* 0b10000000 */
+const unsigned char FULL_BYTE = 0xFF;        /* 0b11111111 */
+const unsigned char NEXT_BYTE_MASK = 0xC0;   /* 0b11000000 */
+const unsigned char NEXT_BYTE_PREFIX = 0x80; /* 0b10000000 */
 
-/* code-point size :  1     2     3     4   */
-const int FBMASK[] = {0x80, 0xE0, 0xF0, 0xF8};
-const int PREFIX[] = {0x00, 0xC0, 0xE0, 0xF0};
+/* code-point size :            1     2     3     4   */
+const unsigned char FBMASK[] = {0x80, 0xE0, 0xF0, 0xF8};
+const unsigned char PREFIX[] = {0x00, 0xC0, 0xE0, 0xF0};
 
 /*  code-point encode :  one-byte    two-byte    three-byte  four-byte    */
-/* const int FBMASK[] = {0b10000000, 0b11100000, 0b11110000, 0b11111000}; */
-/* const int PREFIX[] = {0b00000000, 0b11000000, 0b11100000, 0b11110000}; */
+/* const unsigned char FBMASK[] = {0b10000000, 0b11100000, 0b11110000, 0b11111000}; */
+/* const unsigned char PREFIX[] = {0b00000000, 0b11000000, 0b11100000, 0b11110000}; */
 
 const char *ERR_EOF_ON_READING_NEXT_BYTE = "ERR_EOF_ON_READING_NEXT_BYTE";
 const char *ERR_NEXT_BYTE_WRONG_PREFIX = "ERR_NEXT_BYTE_WRONG_PREFIX";
