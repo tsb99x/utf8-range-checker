@@ -48,31 +48,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const unsigned char FULL_BYTE = 0xFF;        /* 0b11111111 */
-const unsigned char NEXT_BYTE_MASK = 0xC0;   /* 0b11000000 */
-const unsigned char NEXT_BYTE_PREFIX = 0x80; /* 0b10000000 */
+static const unsigned char FULL_BYTE = 0xFF;        /* 0b11111111 */
+static const unsigned char NEXT_BYTE_MASK = 0xC0;   /* 0b11000000 */
+static const unsigned char NEXT_BYTE_PREFIX = 0x80; /* 0b10000000 */
 
 /* code-point size :            1     2     3     4   */
-const unsigned char FBMASK[] = {0x80, 0xE0, 0xF0, 0xF8};
-const unsigned char PREFIX[] = {0x00, 0xC0, 0xE0, 0xF0};
+static const unsigned char FBMASK[] = {0x80, 0xE0, 0xF0, 0xF8};
+static const unsigned char PREFIX[] = {0x00, 0xC0, 0xE0, 0xF0};
 
 /*  code-point encode :  one-byte    two-byte    three-byte  four-byte    */
 /* const unsigned char FBMASK[] = {0b10000000, 0b11100000, 0b11110000, 0b11111000}; */
 /* const unsigned char PREFIX[] = {0b00000000, 0b11000000, 0b11100000, 0b11110000}; */
 
-const char *ERR_EOF_ON_READING_NEXT_BYTE = "ERR_EOF_ON_READING_NEXT_BYTE";
-const char *ERR_NEXT_BYTE_WRONG_PREFIX = "ERR_NEXT_BYTE_WRONG_PREFIX";
-const char *ERR_NO_SUCH_CODE_POINT_EXISTS = "ERR_NO_SUCH_CODE_POINT_EXISTS";
-const char *ERR_FAILED_TO_READ_RANGE = "ERR_FAILED_TO_READ_RANGE";
-const char *ERR_TOO_MANY_RANGES = "ERR_TOO_MANY_RANGES";
+static const char *ERR_EOF_ON_READING_NEXT_BYTE = "ERR_EOF_ON_READING_NEXT_BYTE";
+static const char *ERR_NEXT_BYTE_WRONG_PREFIX = "ERR_NEXT_BYTE_WRONG_PREFIX";
+static const char *ERR_NO_SUCH_CODE_POINT_EXISTS = "ERR_NO_SUCH_CODE_POINT_EXISTS";
+static const char *ERR_FAILED_TO_READ_RANGE = "ERR_FAILED_TO_READ_RANGE";
+static const char *ERR_TOO_MANY_RANGES = "ERR_TOO_MANY_RANGES";
 
-void error(const char *m)
+static void error(const char *m)
 {
         fprintf(stderr, "Error: %s\n", m);
         exit(EXIT_FAILURE);
 }
 
-int read_next_byte(void)
+static int read_next_byte(void)
 {
         int c;
 
@@ -83,7 +83,7 @@ int read_next_byte(void)
         return c & (FULL_BYTE - NEXT_BYTE_MASK);
 }
 
-int complete_code_point(unsigned int code_point, int total_byte_count)
+static int complete_code_point(unsigned int code_point, int total_byte_count)
 {
         int i;
 
@@ -92,7 +92,7 @@ int complete_code_point(unsigned int code_point, int total_byte_count)
         return code_point;
 }
 
-int find_code_point_byte_count(int first_byte)
+static int find_code_point_byte_count(int first_byte)
 {
         int i;
 
@@ -108,7 +108,7 @@ struct range {
         unsigned int to;
 };
 
-int ranges_include(struct range ranges[], int ranges_count,
+static int ranges_include(struct range ranges[], int ranges_count,
                    unsigned int code_point)
 {
         int i;
@@ -119,7 +119,7 @@ int ranges_include(struct range ranges[], int ranges_count,
         return 0;
 }
 
-int process_range_args(int argc, char *argv[], struct range ranges[])
+static int process_range_args(int argc, char *argv[], struct range ranges[])
 {
         int range_cur;
 
