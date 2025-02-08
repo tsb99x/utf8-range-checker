@@ -72,7 +72,7 @@ static void error(const char *m)
         exit(EXIT_FAILURE);
 }
 
-static int read_next_byte(void)
+static unsigned char read_next_byte(void)
 {
         int c;
 
@@ -83,7 +83,7 @@ static int read_next_byte(void)
         return c & (FULL_BYTE - NEXT_BYTE_MASK);
 }
 
-static int complete_code_point(unsigned int code_point, int total_byte_count)
+static unsigned int complete_code_point(unsigned int code_point, int total_byte_count)
 {
         int i;
 
