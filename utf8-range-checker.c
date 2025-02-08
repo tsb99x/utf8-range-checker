@@ -83,7 +83,7 @@ static unsigned char read_next_byte(void)
         return c & (FULL_BYTE - NEXT_BYTE_MASK);
 }
 
-static unsigned int complete_code_point(unsigned int code_point, int total_byte_count)
+static unsigned long complete_code_point(unsigned long code_point, int total_byte_count)
 {
         int i;
 
@@ -104,12 +104,12 @@ static int find_code_point_byte_count(int first_byte)
 }
 
 struct range {
-        unsigned int from;
-        unsigned int to;
+        unsigned long from;
+        unsigned long to;
 };
 
 static int ranges_include(struct range ranges[], int ranges_count,
-                   unsigned int code_point)
+                   unsigned long code_point)
 {
         int i;
 
@@ -128,7 +128,7 @@ static int process_range_args(int argc, char *argv[], struct range ranges[])
 
         range_cur = 0;
         while (argc-- > 1) {
-                int n = sscanf(argv[argc], "U+%x-%x", &ranges[range_cur].from,
+                int n = sscanf(argv[argc], "U+%lX-%lX", &ranges[range_cur].from,
                                &ranges[range_cur].to);
                 if (n != 2)
                         error(ERR_FAILED_TO_READ_RANGE);
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 {
         struct range ranges[32] = {0};
         int ranges_count, out_of_range, ch, cp_byte_count;
-        unsigned int cp;
+        unsigned long cp;
 
         ranges_count = process_range_args(argc, argv, ranges);
 
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
 
                 if (!ranges_include(ranges, ranges_count, cp)) {
                         out_of_range++;
-                        fprintf(stderr, "U+%04X\n", cp);
+                        fprintf(stderr, "U+%04lX\n", cp);
                 }
         }
 
