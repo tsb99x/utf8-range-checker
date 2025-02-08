@@ -2,6 +2,8 @@
 ColumnLimit: 80
 IndentWidth: 8
 BreakBeforeBraces: Custom
+BinPackArguments: false
+InsertBraces: true
 BraceWrapping:
   AfterFunction: true
 ...
