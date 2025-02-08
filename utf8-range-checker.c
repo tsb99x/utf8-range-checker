@@ -8,9 +8,14 @@
         Third-Party Dependencies: none
 
         Compiled successfully with:
-                gcc -O2 -ansi \
-                -Wall -Wextra -Wpedantic -Wstrict-prototypes \
-                -o utf8-range-checker{,.c}
+
+                $ gcc-12 -O2 -std=c90 \
+                        -Wall -Wextra -Wpedantic \
+                        -o utf8-range-checker{,.c}
+
+                $ clang-14 -O2 -std=c90 \
+                        -Weverything \
+                        -o utf8-range-checker{,.c}
 
         This program will check whether supplied STDIN contains ONLY Unicode
         code points of specified ranges. Only UTF-8 encoding is supported.
@@ -30,10 +35,11 @@
         - Number of ranges is limited to 32 elements.
 
         Use like this:
-                cat index.html | ./utf8-range-checker U+0000-00FF U+0400-04FF
 
-                find www/ -type f -name '*.html' -exec cat {} \; \
-                | ./utf8-range-checker U+0000-00FF U+0400-04FF
+                $ cat index.html | ./utf8-range-checker U+0000-00FF U+0400-04FF
+
+                $ find www/ -type f -name '*.html' -exec cat {} \; \
+                        | ./utf8-range-checker U+0000-00FF U+0400-04FF
 
         An explanation of UTF-8 encoding for Unicode can be found at:
         - https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-3/#G7404
