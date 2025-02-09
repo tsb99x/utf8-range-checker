@@ -81,9 +81,9 @@ static void error(const char *m)
         exit(EXIT_FAILURE);
 }
 
-static unsigned char read_next_byte(void)
+static unsigned char read_next_byte(FILE *file)
 {
-        int c = getchar();
+        int c = getc(file);
 
         if (c == EOF) {
                 error(ERR_EOF_ON_READING_NEXT_BYTE);
@@ -94,13 +94,13 @@ static unsigned char read_next_byte(void)
         return c & (FULL_BYTE - NEXT_BYTE_MASK);
 }
 
-static unsigned long complete_code_point(unsigned long code_point,
-                                         int total_byte_count)
+static unsigned long
+complete_code_point(FILE *file, unsigned long code_point, int total_byte_count)
 {
         int i;
 
         for (i = 0; i < total_byte_count - 1; i++) {
-                code_point = code_point << 6 | read_next_byte();
+                code_point = code_point << 6 | read_next_byte(file);
         }
         return code_point;
 }
@@ -167,10 +167,10 @@ int main(int argc, char *argv[])
         int out_of_range = 0;
         int ch = 0;
 
-        while ((ch = getchar()) != EOF) {
+        while ((ch = getc(stdin)) != EOF) {
                 int cp_byte_count = find_code_point_byte_count(ch);
                 unsigned long cp = ch & (FULL_BYTE - FBMASK[cp_byte_count - 1]);
-                cp = complete_code_point(cp, cp_byte_count);
+                cp = complete_code_point(stdin, cp, cp_byte_count);
 
                 if (!ranges_include(ranges, ranges_count, cp)) {
                         out_of_range++;
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
         }
 
         if (ferror(stdin)) {
-                perror("failed to execute getchar()");
+                perror("failed to execute getc(stdin)");
                 return EXIT_FAILURE;
         }
 
