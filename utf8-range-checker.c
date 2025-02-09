@@ -74,6 +74,8 @@ static const char *ERR_FAILED_TO_READ_RANGE = /**/
     "ERR_FAILED_TO_READ_RANGE";
 static const char *ERR_TOO_MANY_RANGES = /**/
     "ERR_TOO_MANY_RANGES";
+static const char *ERR_INPUT_READ_ERROR = /**/
+    "ERR_INPUT_READ_ERROR";
 
 static void error(const char *m)
 {
@@ -178,9 +180,8 @@ int main(int argc, char *argv[])
                 }
         }
 
-        if (ferror(stdin)) {
-                perror("failed to execute getc(stdin)");
-                return EXIT_FAILURE;
+        if (!feof(stdin)) {
+                error(ERR_INPUT_READ_ERROR);
         }
 
         if (out_of_range > 0) {
