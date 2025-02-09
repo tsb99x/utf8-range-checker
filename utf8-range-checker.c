@@ -55,12 +55,9 @@ static const unsigned char NEXT_BYTE_PREFIX = 0x80; /* 0b10000000 */
 
 /* code-point size :                   1     2     3     4   */
 static const unsigned char FBMASK[] = {0x80, 0xE0, 0xF0, 0xF8};
+/* {0b10000000, 0b11100000, 0b11110000, 0b11111000} */
 static const unsigned char PREFIX[] = {0x00, 0xC0, 0xE0, 0xF0};
-
-/* static const unsigned char FBMASK[] =
- *     {0b10000000, 0b11100000, 0b11110000, 0b11111000}; */
-/* static const unsigned char PREFIX[] =
- *     {0b00000000, 0b11000000, 0b11100000, 0b11110000}; */
+/* {0b00000000, 0b11000000, 0b11100000, 0b11110000} */
 
 static const char *ERR_EOF_ON_READING_NEXT_BYTE = /**/
     "ERR_EOF_ON_READING_NEXT_BYTE";
@@ -81,9 +78,9 @@ static void error(const char *m)
 
 static unsigned char read_next_byte(void)
 {
-        int c;
+        int c = getchar();
 
-        if ((c = getchar()) == EOF) {
+        if (c == EOF) {
                 error(ERR_EOF_ON_READING_NEXT_BYTE);
         }
         if ((c & NEXT_BYTE_MASK) != NEXT_BYTE_PREFIX) {
@@ -137,13 +134,12 @@ static int ranges_include(struct range ranges[], int ranges_count,
 
 static int process_range_args(int argc, char *argv[], struct range ranges[])
 {
-        int range_cur;
+        int range_cur = 0;
 
         if (argc > 33) {
                 error(ERR_TOO_MANY_RANGES);
         }
 
-        range_cur = 0;
         while (argc-- > 1) {
                 int n = sscanf(argv[argc],
                                "U+%lX-%lX",
@@ -161,15 +157,13 @@ static int process_range_args(int argc, char *argv[], struct range ranges[])
 int main(int argc, char *argv[])
 {
         struct range ranges[32] = {0};
-        int ranges_count, out_of_range, ch, cp_byte_count;
-        unsigned long cp;
+        int ranges_count = process_range_args(argc, argv, ranges);
+        int out_of_range = 0;
+        int ch = 0;
 
-        ranges_count = process_range_args(argc, argv, ranges);
-
-        out_of_range = 0;
         while ((ch = getchar()) != EOF) {
-                cp_byte_count = find_code_point_byte_count(ch);
-                cp = ch & (FULL_BYTE - FBMASK[cp_byte_count - 1]);
+                int cp_byte_count = find_code_point_byte_count(ch);
+                unsigned long cp = ch & (FULL_BYTE - FBMASK[cp_byte_count - 1]);
                 cp = complete_code_point(cp, cp_byte_count);
 
                 if (!ranges_include(ranges, ranges_count, cp)) {
