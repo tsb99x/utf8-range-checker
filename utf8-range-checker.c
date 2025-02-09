@@ -10,13 +10,18 @@ Third-Party Dependencies: none
 
 Compiled successfully with:
 
-        $ gcc-12 -O2 -std=c90 \
+        GCC 12
+        $ gcc -O2 -std=c90 \
                 -Wall -Wextra -Wpedantic \
                 -o utf8-range-checker{,.c}
 
-        $ clang-14 -O2 -std=c90 \
+        Clang 14
+        $ clang -O2 -std=c90 \
                 -Weverything \
                 -o utf8-range-checker{,.c}
+
+        MSVC 2010
+        > cl.exe /O2 /W4 /Za utf8-range-checker.c
 
 This program will check whether supplied STDIN contains ONLY Unicode code
 points of specified ranges. Only UTF-8 encoding is supported.
@@ -118,14 +123,15 @@ struct range {
         unsigned long to;
 };
 
-static int ranges_include(struct range ranges[], int ranges_count,
+static int ranges_include(struct range ranges[],
+                          int ranges_count,
                           unsigned long code_point)
 {
         int i;
 
         for (i = 0; i < ranges_count; i++) {
-                if (code_point >= ranges[i].from &&
-                    code_point <= ranges[i].to) {
+                if (code_point >= ranges[i].from
+                    && code_point <= ranges[i].to) {
                         return 1;
                 }
         }
