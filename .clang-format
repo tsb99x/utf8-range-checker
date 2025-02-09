@@ -6,6 +6,7 @@ AllowShortIfStatementsOnASingleLine: false
 IndentCaseLabels: false
 
 # Customized
+InsertBraces: true
 SeparateDefinitionBlocks : Always
 BinPackArguments: false
 BinPackParameters: false
