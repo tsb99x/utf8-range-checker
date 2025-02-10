@@ -3,8 +3,9 @@
 Author: Anton Muravev
 Homepage: https://tsb99x.ru
 Filename: utf8-range-checker.c
-Version: 1
+Version: 2
 Release Date: 2024-11-06T13:58:52+03:00
+Last Update: 2025-02-10T21:06:20+03:00
 License: Public Domain <https://unlicense.org>, see at the end of file.
 Third-Party Dependencies: none
 
