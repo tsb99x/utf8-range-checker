@@ -1,31 +1,4 @@
-Author: Anton Muravev
-
-Homepage: https://tsb99x.ru
-
-Filename: utf8-range-checker.c
-
-Version: 2
-
-Release Date: 2024-11-06T13:58:52+03:00
-
-Last Update: 2025-02-10T21:06:20+03:00
-
-Third-Party Dependencies: none
-
-Compiled successfully with:
-
-        GCC 12
-        $ gcc -O2 -std=c90 \
-                -Wall -Wextra -Wpedantic \
-                -o utf8-range-checker{,.c}
-
-        Clang 14
-        $ clang -O2 -std=c90 \
-                -Weverything \
-                -o utf8-range-checker{,.c}
-
-        MSVC 2010
-        > cl.exe /O2 /W4 /Za utf8-range-checker.c
+# UTF-8 Range Checker
 
 This program will check whether supplied STDIN contains ONLY Unicode code
 points of specified ranges. Only UTF-8 encoding is supported.
@@ -43,12 +16,39 @@ STDIN assumed to be always valid!
 Limitations:
 - Number of ranges is limited to 32 elements.
 
+Third-Party Dependencies: none
+
+## Compilation
+
+Compiled successfully with:
+
+```
+GCC 12
+$ gcc -O2 -std=c90 \
+        -Wall -Wextra -Wpedantic \
+        -o utf8-range-checker{,.c}
+
+Clang 14
+$ clang -O2 -std=c90 \
+        -Weverything \
+        -o utf8-range-checker{,.c}
+
+MSVC 2010
+> cl.exe /O2 /W4 /Za utf8-range-checker.c
+```
+
+## Usage
+
 Use like this:
 
-        $ cat index.html | ./utf8-range-checker U+0000-00FF U+0400-04FF
+```
+$ cat index.html | ./utf8-range-checker U+0000-00FF U+0400-04FF
 
-        $ find www/ -type f -name '*.html' -exec cat {} \; \
-                | ./utf8-range-checker U+0000-00FF U+0400-04FF
+$ find www/ -type f -name '*.html' -exec cat {} \; \
+        | ./utf8-range-checker U+0000-00FF U+0400-04FF
+```
+
+## References
 
 An explanation of UTF-8 encoding for Unicode can be found at:
 - https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-3/#G7404
