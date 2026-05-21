@@ -7,3 +7,5 @@ all: utf8-range-checker
 
 clean:
 	rm -f utf8-range-checker
+
+.PHONY: all clean
