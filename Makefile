@@ -2,10 +2,11 @@
 
 CC = gcc
 CFLAGS = -O2 -std=c90 -Wall -Wextra -Wpedantic
+BIN = utf8-range-checker
 
-all: utf8-range-checker
+all: $(BIN)
 
 clean:
-	rm -f utf8-range-checker
+	rm -f $(BIN)
 
 .PHONY: all clean
